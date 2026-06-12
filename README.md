@@ -2,6 +2,8 @@
 
 Interactive browser simulator for **Dan Tanaka's chemotactic / swarm oscillator** model.
 
+Live app: <https://tanaka-swarm-oscillators.vercel.app/>
+
 The app explores the Tanaka reduced model through membrane / fruit-section candidates, PRL clustered clusters, RIMS phase-map landmarks, and exploratory fireworks-like motion. It is built as a static Canvas app, so it runs entirely in the browser with no backend, no account system, and no server-side simulation.
 
 ## What You Can Do
