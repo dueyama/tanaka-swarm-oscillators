@@ -1,0 +1,13 @@
+{
+  "name": "tanaka-swarm-oscillators-site",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix webapp run dev",
+    "build": "npm --prefix webapp run build",
+    "preview": "npm --prefix webapp run preview",
+    "test": "npm --prefix webapp test"
+  },
+  "license": "MIT"
+}

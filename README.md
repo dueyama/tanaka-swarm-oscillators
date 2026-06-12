@@ -24,7 +24,6 @@ The browser presets are not exhaustive reproductions of every reported state. Th
 ## Run Locally
 
 ```bash
-cd webapp
 npm test
 npm run dev
 ```
@@ -44,31 +43,17 @@ Keyboard shortcuts:
 ## Build
 
 ```bash
-cd webapp
 npm run build
 npm run preview
 ```
 
 The static build is written to `webapp/dist/`.
 
-## Deploy on Vercel
-
-When importing this repository into Vercel, set the project root to `webapp`.
-
-```text
-Root Directory: webapp
-Framework Preset: Other
-Build Command: npm run build
-Output Directory: dist
-```
-
-The same settings are encoded in `webapp/vercel.json`. The generated `webapp/dist/` directory is intentionally ignored; Vercel should build it from source on each deployment.
-
-Public URL: TBD
-
 ## Project Layout
 
 ```text
+package.json              root scripts for local use and static hosting builds
+vercel.json               static hosting build configuration
 webapp/
   index.html              simulator page
   preset-guide.html       equation and preset guide
