@@ -20,6 +20,7 @@ const trailCtx = trailCanvas.getContext("2d", { alpha: true });
 
 const ui = {
   appStage: document.getElementById("appStage"),
+  simSurface: document.getElementById("simSurface"),
   presetSelect: document.getElementById("presetSelect"),
   presetSelectLabel: document.getElementById("presetSelectLabel"),
   presetGuide: document.getElementById("presetGuide"),
@@ -267,6 +268,10 @@ function resetSystem() {
 
 function installEvents() {
   window.addEventListener("resize", resize);
+  if ("ResizeObserver" in window && ui.simSurface) {
+    const observer = new ResizeObserver(resize);
+    observer.observe(ui.simSurface);
+  }
 
   ui.presetSelect.addEventListener("change", () => {
     loadPreset(state.model, ui.presetSelect.value);
@@ -380,9 +385,12 @@ function endPointer() {
 
 function resize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = (ui.simSurface ?? canvas).getBoundingClientRect();
+  const width = Math.max(1, Math.round(rect.width || window.innerWidth));
+  const height = Math.max(1, Math.round(rect.height || window.innerHeight));
   state.dpr = dpr;
-  state.width = window.innerWidth;
-  state.height = window.innerHeight;
+  state.width = width;
+  state.height = height;
   for (const c of [canvas, trailCanvas]) {
     c.width = Math.floor(state.width * dpr);
     c.height = Math.floor(state.height * dpr);
