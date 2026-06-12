@@ -1,5 +1,5 @@
-import { COMMON_CONTROLS, MODEL_CONTROLS, MODEL_META, PRESETS, PUBLIC_MODEL } from "./src/presets.js";
-import { applyStir, cloneParams, createSystem, diagnostics, serializeState, stepSystem } from "./src/simulation.js";
+import { COMMON_CONTROLS, MODEL_CONTROLS, MODEL_META, PRESETS, PUBLIC_MODEL } from "./presets.js";
+import { applyStir, cloneParams, createSystem, diagnostics, serializeState, stepSystem } from "./simulation.js";
 import {
   controlText,
   hrefWithLanguage,
@@ -11,7 +11,7 @@ import {
   syncLanguageControl,
   syncLanguageUrl,
   text,
-} from "./src/i18n.js";
+} from "./i18n.js";
 
 const canvas = document.getElementById("mainCanvas");
 const trailCanvas = document.getElementById("trailCanvas");

@@ -56,16 +56,17 @@ The static build is written to `dist/`.
 ```text
 package.json              root scripts for local use and static hosting builds
 vercel.json               static hosting build configuration
-index.html                simulator page
-preset-guide.html         equation and preset guide
-app.js                    Canvas runtime and controls
-preset-guide.js           guide-page preview rendering
-styles.css                app and guide styling
 src/
+  index.html              simulator page
+  preset-guide.html       equation and preset guide
+  app.js                  simulator runtime and controls
+  preset-guide.js         guide-page preview rendering
+  styles.css              app and guide styling
   simulation.js           Tanaka RHS and diagnostics
   presets.js              preset and slider definitions
   i18n.js                 English / Japanese UI text
   vercel-analytics.js     Vercel Web Analytics loader
+  assets/                 favicon and app icons
 tests/
   simulation.test.mjs     sign-convention and smoke tests
 scripts/

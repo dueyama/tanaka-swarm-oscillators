@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Interactive browser simulator for Dan Tanaka's chemotactic swarm oscillators.",
   "scripts": {
-    "dev": "node scripts/serve.mjs . 5173",
+    "dev": "node scripts/serve.mjs src 5173",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve.mjs dist 4173",
     "test": "node tests/simulation.test.mjs"

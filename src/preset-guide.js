@@ -1,5 +1,5 @@
-import { PRESETS, PUBLIC_MODEL } from "./src/presets.js";
-import { createSystem, stepSystem } from "./src/simulation.js";
+import { PRESETS, PUBLIC_MODEL } from "./presets.js";
+import { createSystem, stepSystem } from "./simulation.js";
 import {
   applyStaticTranslations,
   hrefWithLanguage,
@@ -11,7 +11,7 @@ import {
   syncLanguageControl,
   syncLanguageUrl,
   text,
-} from "./src/i18n.js";
+} from "./i18n.js";
 
 const grid = document.getElementById("presetGuideGrid");
 const presets = PRESETS[PUBLIC_MODEL];
