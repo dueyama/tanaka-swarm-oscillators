@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this simulator, please cite the Tanaka model papers listed below."
+title: "Dan Tanaka's Swarm Oscillators"
+authors:
+  - family-names: "Ueyama"
+    given-names: "Daishin"
+license: MIT
+references:
+  - type: article
+    authors:
+      - family-names: "Tanaka"
+        given-names: "Dan"
+    title: "General Chemotactic Model of Oscillators"
+    journal: "Physical Review Letters"
+    year: 2007
+    volume: 99
+    doi: "10.1103/PhysRevLett.99.134103"
+  - type: generic
+    authors:
+      - family-names: "Tanaka"
+        given-names: "Dan"
+      - family-names: "Iida"
+        given-names: "Kazuki"
+    title: "Membrane pattern in a swarm oscillator model"
+    collection-title: "RIMS Kokyuroku"
+    year: 2009
+    volume: 1633
+  - type: article
+    authors:
+      - family-names: "Tanaka"
+        given-names: "Dan"
+    title: "Swarm oscillators"
+    journal: "Progress of Theoretical Physics Supplement"
+    year: 2009
+    volume: 178
+    doi: "10.1143/PTPS.178.169"

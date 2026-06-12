@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="ja" class="guide-root">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>式・プリセット解説 — Dan Tanaka's Swarm Oscillators</title>
+  <meta name="description" content="Dan Tanaka chemotactic swarm oscillator の式、パラメータ、プリセット、参考文献の解説。" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="src/vercel-analytics.js"></script>
+</head>
+<body class="guide-page">
+  <main class="guide-shell" aria-label="Dan Tanaka equation and preset explanation">
+    <header class="guide-header">
+      <div class="guide-title-copy">
+        <h1 data-i18n="guide.title">式・プリセット解説</h1>
+        <p data-i18n="guide.subtitle">Dan Tanaka の chemotactic / swarm oscillator の式、パラメータ、プリセットの見どころ。</p>
+      </div>
+      <div class="guide-header-actions">
+        <a class="guide-back" id="guideBack" href="index.html">Simulator</a>
+        <a class="guide-back github-link" href="https://github.com/dueyama/tanaka-swarm-oscillators" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">GitHub</a>
+        <div class="language-switch guide-language-switch" id="languageSwitch" role="group" aria-label="Language">
+          <button class="language-option" type="button" data-lang-mode="auto">AUTO</button>
+          <button class="language-option" type="button" data-lang-mode="ja">JA</button>
+          <button class="language-option" type="button" data-lang-mode="en">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="model-explainer" aria-label="common Tanaka model explanation">
+      <div class="model-explainer-copy">
+        <p class="guide-kicker" data-i18n="guide.modelKicker">Model</p>
+        <h2 data-i18n="guide.modelTitle">Tanaka 縮約モデル</h2>
+        <p data-i18n-html="guide.modelIntro">
+          ここでは Dan Tanaka の chemotactic / swarm oscillator を、位置と内部位相をもつ
+          縮約モデルとして説明します。プリセット名は複数の論文や観察したいパターンに
+          由来しますが、ブラウザ版では下の方程式と記号を基準に、パラメータ、粒子数、
+          初期乱数、時間刻み、軌跡設定を整理しています
+          <a class="citation-link" href="#references">[1-3]</a>。
+        </p>
+      </div>
+
+      <div class="equation-panel" aria-label="shared model equations">
+        <p class="equation-title" data-i18n="guide.equationTitle">Shared equations</p>
+        <div class="math-stack">
+          <math display="block" aria-label="phase equation">
+            <mfrac>
+              <mrow><mi>d</mi><msub><mi>&psi;</mi><mi>i</mi></msub></mrow>
+              <mrow><mi>d</mi><mi>t</mi></mrow>
+            </mfrac>
+            <mo>=</mo>
+            <msub>
+              <mo>&sum;</mo>
+              <mrow><mi>j</mi><mo>&ne;</mo><mi>i</mi></mrow>
+            </msub>
+            <msup>
+              <mi>e</mi>
+              <mrow><mo>-</mo><mo>|</mo><msub><mi>R</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>|</mo></mrow>
+            </msup>
+            <mi mathvariant="normal">sin</mi>
+            <mo>&ApplyFunction;</mo>
+            <mo>(</mo>
+            <msub><mi>&Psi;</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub>
+            <mo>+</mo>
+            <mi>&alpha;</mi>
+            <mo>|</mo><msub><mi>R</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>|</mo>
+            <mo>-</mo>
+            <msub><mi>c</mi><mn>1</mn></msub>
+            <mo>)</mo>
+          </math>
+          <math display="block" aria-label="position equation">
+            <mfrac>
+              <mrow><mi>d</mi><msub><mi>r</mi><mi>i</mi></msub></mrow>
+              <mrow><mi>d</mi><mi>t</mi></mrow>
+            </mfrac>
+            <mo>=</mo>
+            <msub><mi>c</mi><mn>3</mn></msub>
+            <msub>
+              <mo>&sum;</mo>
+              <mrow><mi>j</mi><mo>&ne;</mo><mi>i</mi></mrow>
+            </msub>
+            <mover>
+              <msub><mi>R</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub>
+              <mo>^</mo>
+            </mover>
+            <msup>
+              <mi>e</mi>
+              <mrow><mo>-</mo><mo>|</mo><msub><mi>R</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>|</mo></mrow>
+            </msup>
+            <mi mathvariant="normal">sin</mi>
+            <mo>&ApplyFunction;</mo>
+            <mo>(</mo>
+            <msub><mi>&Psi;</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub>
+            <mo>+</mo>
+            <mi>&alpha;</mi>
+            <mo>|</mo><msub><mi>R</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>|</mo>
+            <mo>-</mo>
+            <msub><mi>c</mi><mn>2</mn></msub>
+            <mo>)</mo>
+          </math>
+        </div>
+        <div class="equation-definitions" aria-label="notation definitions">
+          <math display="block">
+            <msub><mi>R</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub>
+            <mo>=</mo>
+            <msub><mi>r</mi><mi>j</mi></msub>
+            <mo>-</mo>
+            <msub><mi>r</mi><mi>i</mi></msub>
+            <mo>,</mo>
+            <mspace width="0.7em"></mspace>
+            <mover>
+              <msub><mi>R</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub>
+              <mo>^</mo>
+            </mover>
+            <mo>=</mo>
+            <mfrac>
+              <msub><mi>R</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub>
+              <mrow><mo>|</mo><msub><mi>R</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>|</mo></mrow>
+            </mfrac>
+            <mo>,</mo>
+            <mspace width="0.7em"></mspace>
+            <msub><mi>&Psi;</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub>
+            <mo>=</mo>
+            <msub><mi>&psi;</mi><mi>j</mi></msub>
+            <mo>-</mo>
+            <msub><mi>&psi;</mi><mi>i</mi></msub>
+          </math>
+        </div>
+        <p class="equation-note" data-i18n-html="guide.equationNote">
+          周期境界では <span class="formula"><i>L</i></span> の箱で minimum image を使い、
+          自己相互作用 <span class="formula"><i>j</i><span>=</span><i>i</i></span> は和から除きます
+          <a class="citation-link" href="#references">[1-3]</a>。
+        </p>
+      </div>
+
+      <div class="model-intuition">
+        <h3 data-i18n="guide.intuitionTitle">式の気持ち</h3>
+        <div class="intuition-list">
+          <p data-i18n-html="guide.intuitionPhase">
+            <strong>位相の式</strong>
+            近くにいる振動子ほど
+            <span class="formula"><i>e</i><sup>-|<i>R</i><sub>ji</sub>|</sup></span>
+            で強く効きます。括弧の中身
+            <span class="formula"><i>&Psi;</i><sub>ji</sub><span>+</span><i>&alpha;</i>|<i>R</i><sub>ji</sub>|<span>-</span><i>c</i><sub>1</sub></span>
+            の sine が正なら
+            <span class="formula"><i>&psi;</i><sub>i</sub></span>
+            は進み、負なら遅れます。つまり
+            <span class="formula"><i>c</i><sub>1</sub></span>
+            は、
+            どの位相差の相手が時計を進めるかを決めるオフセットです。
+          </p>
+          <p data-i18n-html="guide.intuitionPosition">
+            <strong>位置の式</strong>
+            <span class="formula"><i>R&#770;</i><sub>ji</sub></span>
+            は粒子 <span class="formula"><i>i</i></span> から粒子
+            <span class="formula"><i>j</i></span> へ向かう単位方向です。
+            sine の値が正なら粒子 <span class="formula"><i>i</i></span> は粒子
+            <span class="formula"><i>j</i></span> の方向へ動き、負なら逆向きへ動きます。
+            <span class="formula"><i>c</i><sub>2</sub></span>
+            はその引力・斥力の位相オフセット、
+            <span class="formula"><i>c</i><sub>3</sub></span>
+            は動く速さ全体の係数です。
+          </p>
+          <p data-i18n-html="guide.intuitionDelay">
+            <strong>距離依存の遅れ</strong>
+            <span class="formula"><i>&alpha;</i>|<i>R</i><sub>ji</sub>|</span>
+            は、遠い相手ほど相互作用の位相がずれる項です。
+            <span class="formula"><i>&alpha;</i><span>=</span><span>0</span></span>
+            では相互作用は位相差と
+            <span class="formula"><i>c</i><sub>1</sub><span>/</span><i>c</i><sub>2</sub></span>
+            だけで決まり、
+            <span class="formula"><i>&alpha;</i></span>
+            を大きくすると clustered clusters のような距離込みの秩序が出やすくなります。
+          </p>
+        </div>
+      </div>
+
+      <div class="parameter-section">
+        <h3 data-i18n="guide.parameterTitle">記号とパラメータ</h3>
+        <dl class="parameter-glossary">
+          <div>
+            <dt><span class="formula"><i>r</i><sub>i</sub></span></dt>
+            <dd data-i18n-html="guide.parameter.ri">粒子 <span class="formula"><i>i</i></span> の二次元位置。ブラウザでは周期箱の中の座標として描きます。</dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>&psi;</i><sub>i</sub></span></dt>
+            <dd data-i18n-html="guide.parameter.psi">
+              粒子 <span class="formula"><i>i</i></span> の内部振動位相。色はこの値を
+              <span class="formula"><span>2</span><i>&pi;</i></span> で割ったものに対応します。
+            </dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>R</i><sub>ji</sub></span></dt>
+            <dd data-i18n-html="guide.parameter.Rji">
+              <span class="formula"><i>r</i><sub>j</sub><span>-</span><i>r</i><sub>i</sub></span>。
+              粒子 <span class="formula"><i>i</i></span> から見た粒子
+              <span class="formula"><i>j</i></span> への相対ベクトルです。
+            </dd>
+          </div>
+          <div>
+            <dt><span class="formula">|<i>R</i><sub>ji</sub>|</span></dt>
+            <dd data-i18n-html="guide.parameter.distance">
+              粒子間距離。相互作用の強さは
+              <span class="formula"><i>e</i><sup>-|<i>R</i><sub>ji</sub>|</sup></span>
+              で短距離ほど大きくなります。
+            </dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>R&#770;</i><sub>ji</sub></span></dt>
+            <dd data-i18n-html="guide.parameter.Rhat">
+              <span class="formula"><i>R</i><sub>ji</sub><span>/</span>|<i>R</i><sub>ji</sub>|</span>。
+              移動方向だけを表す単位ベクトルです。
+            </dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>&Psi;</i><sub>ji</sub></span></dt>
+            <dd data-i18n-html="guide.parameter.Psi">
+              <span class="formula"><i>&psi;</i><sub>j</sub><span>-</span><i>&psi;</i><sub>i</sub></span>。
+              粒子 <span class="formula"><i>i</i></span> から見た粒子
+              <span class="formula"><i>j</i></span> との位相差です。
+            </dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>c</i><sub>1</sub></span></dt>
+            <dd data-i18n="guide.parameter.c1">位相方程式の応答オフセット。どの位相差の近傍が時計を進めるか、遅らせるかをずらします。</dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>c</i><sub>2</sub></span></dt>
+            <dd data-i18n="guide.parameter.c2">位置方程式の応答オフセット。どの位相差の近傍へ近づくか、離れるかをずらします。</dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>c</i><sub>3</sub></span></dt>
+            <dd data-i18n="guide.parameter.c3">位置ダイナミクスの速度係数。小さいほど位相変化に対して粒子の移動がゆっくりになります。</dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>&alpha;</i></span></dt>
+            <dd data-i18n-html="guide.parameter.alpha">距離に比例する位相遅れ。<span class="formula"><span>0</span></span> なら距離は強さだけに効き、位相のずれは作りません。</dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>N</i><span>,</span> <i>L</i></span></dt>
+            <dd data-i18n-html="guide.parameter.nL"><span class="formula"><i>N</i></span> は粒子数、<span class="formula"><i>L</i></span> は周期正方形箱の一辺です。</dd>
+          </div>
+          <div>
+            <dt><span class="formula">&Delta;<i>t</i></span>, <span class="param-token">steps/frame</span></dt>
+            <dd data-i18n="guide.parameter.dt">ブラウザの Euler 積分設定です。論文モデルの物理パラメータではありません。</dd>
+          </div>
+          <div>
+            <dt><span class="param-token">seed</span></dt>
+            <dd data-i18n="guide.parameter.seed">初期位置と初期位相を決める乱数種。同じプリセットを同じ初期条件から再現するための値です。</dd>
+          </div>
+          <div>
+            <dt><span class="param-token">trail</span>, <span class="param-token">velocityClamp</span></dt>
+            <dd data-i18n="guide.parameter.trail">見た目とブラウザ安定性のための実装設定です。Tanaka の方程式そのもののパラメータではありません。</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="preset-context" aria-label="preset selection and parameter axes">
+      <div class="preset-context-copy">
+        <h2 data-i18n="guide.presetContextTitle">プリセットは入口用の選抜です</h2>
+        <p data-i18n-html="guide.presetContextCopy">
+          Tanaka 系の論文では、membrane / section-of-fruit, clustered clusters,
+          branch, grid with defect, fireworks, train, stick-slip motion, moving membranes
+          など複数の状態が報告・示唆されています
+          <a class="citation-link" href="#references">[1-3]</a>。
+          このブラウザ版のプリセットは、その全体を網羅するリストではなく、
+          軽く動かしながら特徴の違いを掴むための入口です。RIMS phase A-D は、
+          特に <span class="formula"><i>c</i><sub>1</sub></span> /
+          <span class="formula"><i>c</i><sub>2</sub></span> の相図を読むための代表点として追加しています。
+          各カードでは論文・資料側の値と、見やすさや速度のために調整したブラウザ値を分けて表示します。
+        </p>
+      </div>
+
+      <div class="axis-summary">
+        <h3 data-i18n="guide.axisTitle">主に動かしているパラメータ</h3>
+        <dl>
+          <div>
+            <dt><span class="formula"><i>c</i><sub>1</sub></span></dt>
+            <dd data-i18n="guide.axis.c1">位相応答のずれ。近い相手が時計を進めるか、遅らせるかを変えます。</dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>c</i><sub>2</sub></span></dt>
+            <dd data-i18n="guide.axis.c2">運動応答のずれ。同じ位相差でも近づく側に出るか、離れる側に出るかを変えます。</dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>c</i><sub>3</sub></span></dt>
+            <dd data-i18n="guide.axis.c3">移動の速さ。membrane 近傍では小さく、clustered clusters では大きめです。</dd>
+          </div>
+          <div>
+            <dt><span class="formula"><i>&alpha;</i></span></dt>
+            <dd data-i18n-html="guide.axis.alpha">距離に比例する位相遅れ。<span class="formula"><i>&alpha;</i><span>=</span><span>0</span></span> では距離は強さだけに効き、大きくすると距離込みの秩序が出やすくなります。</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="preset-map">
+        <h3 data-i18n="guide.presetMapTitle">プリセット群の見方</h3>
+        <ul>
+          <li><strong data-i18n="guide.presetMapLabels.membrane">Membrane 系</strong><span data-i18n-html="guide.presetMap.membrane">小さい <span class="formula"><i>c</i><sub>3</sub></span> と <span class="formula"><i>&alpha;</i><span>=</span><span>0</span></span> で、ゆっくり膜・果実断面候補を見る。</span></li>
+          <li><strong>PRL clustered clusters</strong><span data-i18n-html="guide.presetMap.clustered"><span class="formula"><i>&alpha;</i></span> と <span class="formula"><i>c</i><sub>3</sub></span> が大きめで、小クラスターの生成と配置を見る。</span></li>
+          <li><strong>Fireworks explorer</strong><span data-i18n="guide.presetMap.fireworks">論文中に名前が挙がる fireworks / train / stick-slip 系を探すための探索用 candidate。</span></li>
+          <li><strong>RIMS phase A-D</strong><span data-i18n-html="guide.presetMap.rims"><span class="formula"><i>c</i><sub>1</sub></span> と <span class="formula"><i>c</i><sub>2</sub></span> の相図上で、位相引力/反発と位置引力/斥力の組み合わせを見る。</span></li>
+        </ul>
+      </div>
+
+      <div class="phase-map-note">
+        <h3 data-i18n-html="guide.phaseMapTitle">RIMS の <span class="formula"><i>c</i><sub>1</sub></span>, <span class="formula"><i>c</i><sub>2</sub></span> 相図</h3>
+        <p data-i18n-html="guide.phaseMap1">
+          Tanaka–Iida の RIMS 論文 <a class="citation-link" href="#ref-2">[2]</a> では、
+          <span class="formula"><i>N</i><span>=</span><span>20</span></span>,
+          <span class="formula"><i>L</i><span>=</span><span>10</span></span>,
+          <span class="formula"><i>c</i><sub>3</sub><span>=</span><span>0.02</span></span>,
+          <span class="formula"><i>&alpha;</i><span>=</span><span>0</span></span>
+          を固定し、
+          <span class="formula"><i>c</i><sub>1</sub></span> と
+          <span class="formula"><i>c</i><sub>2</sub></span> を 0.2 刻みで走査しています。
+          <span class="formula"><i>t</i><span>=</span><span>0</span></span> から
+          <span class="formula"><i>t</i><span>=</span><span>5000</span></span> は捨て、
+          <span class="formula"><i>t</i><span>=</span><span>5000</span></span> から
+          <span class="formula"><i>t</i><span>=</span><span>10000</span></span> の時間平均で、
+          最近接距離の平均と内部状態分散を見ています。
+        </p>
+        <p data-i18n-html="guide.phaseMap2">
+          代表点は A:
+          <span class="formula"><i>c</i><sub>1</sub><span>=</span><span>0.5</span></span>,
+          <span class="formula"><i>c</i><sub>2</sub><span>=</span><span>1.5</span></span>、B:
+          <span class="formula"><i>c</i><sub>1</sub><span>=</span><span>3.0</span></span>,
+          <span class="formula"><i>c</i><sub>2</sub><span>=</span><span>2.0</span></span>、C:
+          <span class="formula"><i>c</i><sub>1</sub><span>=</span><span>6.0</span></span>,
+          <span class="formula"><i>c</i><sub>2</sub><span>=</span><span>4.0</span></span>、D:
+          <span class="formula"><i>c</i><sub>1</sub><span>=</span><span>4.0</span></span>,
+          <span class="formula"><i>c</i><sub>2</sub><span>=</span><span>4.0</span></span> です。
+          ブラウザの A-D プリセットはこの代表点を見やすい粒子数に増やしたものです。
+        </p>
+      </div>
+    </section>
+
+    <section class="guide-grid" id="presetGuideGrid" aria-label="preset explanations"></section>
+
+    <section class="references-section" id="references" aria-label="references">
+      <h2 data-i18n="guide.referencesTitle">References</h2>
+      <ol>
+        <li id="ref-1">
+          <a href="https://u-fukui.repo.nii.ac.jp/record/22564/files/GetPDFServlet.pdf" target="_blank" rel="noopener noreferrer">
+            [1] D. Tanaka, "General chemotactic model of oscillators," Physical Review Letters 99, 134103, 2007.
+          </a>
+        </li>
+        <li id="ref-2">
+          <a href="https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/1633-06.pdf" target="_blank" rel="noopener noreferrer">
+            [2] D. Tanaka and K. Iida, "Membrane pattern in a swarm oscillator model," RIMS Kokyuroku 1633, 2009.
+          </a>
+        </li>
+        <li id="ref-3">
+          <a href="https://academic.oup.com/ptps/article-pdf/doi/10.1143/PTPS.178.169/5287835/178-169.pdf" target="_blank" rel="noopener noreferrer">
+            [3] D. Tanaka, "Swarm oscillators," Progress of Theoretical Physics Supplement 178, 169-177, 2009.
+          </a>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <script type="module" src="preset-guide.js"></script>
+</body>
+</html>

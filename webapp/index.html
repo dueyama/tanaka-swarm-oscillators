@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dan Tanaka's Swarm Oscillators</title>
+  <meta name="description" content="Interactive browser simulator for Dan Tanaka's chemotactic swarm oscillators." />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="src/vercel-analytics.js"></script>
+</head>
+<body>
+  <main class="stage" id="appStage" aria-label="Dan Tanaka's swarm oscillators interactive simulator">
+    <canvas id="trailCanvas" aria-hidden="true"></canvas>
+    <canvas id="mainCanvas" aria-label="phase-colored oscillator animation"></canvas>
+
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div>
+        <h1>Dan Tanaka's Swarm Oscillators</h1>
+      </div>
+      <div class="top-actions">
+        <div class="language-switch" id="languageSwitch" role="group" aria-label="Language">
+          <button class="language-option" type="button" data-lang-mode="auto">AUTO</button>
+          <button class="language-option" type="button" data-lang-mode="ja">JA</button>
+          <button class="language-option" type="button" data-lang-mode="en">EN</button>
+        </div>
+        <a class="pill github-link" href="https://github.com/dueyama/tanaka-swarm-oscillators" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">GitHub</a>
+        <button class="pill primary" id="toggleRun" type="button">Pause</button>
+        <button class="pill" id="resetRun" type="button">Reset</button>
+        <button class="pill" id="snapshot" type="button">Snapshot</button>
+        <button class="pill icon-pill" id="fullscreen" type="button" aria-label="Fullscreen">⛶</button>
+      </div>
+    </header>
+
+    <aside class="panel" id="controlPanel" aria-label="simulation controls">
+      <section class="panel-section model-card">
+        <label class="select-label" id="presetSelectLabel" for="presetSelect">Preset</label>
+        <select id="presetSelect" class="select-input"></select>
+        <a class="guide-link" id="presetGuide" href="preset-guide.html">式・プリセット解説</a>
+
+        <p class="model-story" id="modelStory"></p>
+      </section>
+
+      <section class="panel-section diagnostics">
+        <div class="diag">
+          <span class="diag-label" id="diagOrderLabel">Order</span>
+          <span class="diag-value" id="orderValue">0.000</span>
+        </div>
+        <div class="diag">
+          <span class="diag-label" id="diagNearestLabel">NN</span>
+          <span class="diag-value" id="nearestValue">0.000</span>
+        </div>
+        <div class="diag">
+          <span class="diag-label" id="diagPhaseVarianceLabel">Phase var</span>
+          <span class="diag-value" id="phaseVarianceValue">0.000</span>
+        </div>
+        <div class="diag">
+          <span class="diag-label" id="diagRadiusLabel">Radius</span>
+          <span class="diag-value" id="radiusValue">0.000</span>
+        </div>
+        <div class="diag">
+          <span class="diag-label" id="diagTimeLabel">t</span>
+          <span class="diag-value" id="timeValue">0.00</span>
+        </div>
+        <div class="diag">
+          <span class="diag-label" id="diagFpsLabel">FPS</span>
+          <span class="diag-value" id="fpsValue">--</span>
+        </div>
+      </section>
+
+      <section class="panel-section">
+        <div class="section-heading">
+          <h2 id="commonSectionTitle">Common</h2>
+          <span id="commonSectionMeta">live controls</span>
+        </div>
+        <div id="commonControls" class="control-grid"></div>
+      </section>
+
+      <section class="panel-section">
+        <div class="section-heading">
+          <h2 id="modelControlTitle">Tanaka</h2>
+          <span id="modelControlMeta">equation parameters</span>
+        </div>
+        <div id="modelControls" class="control-grid"></div>
+      </section>
+
+      <section class="panel-section panel-references" aria-label="references">
+        <div class="section-heading">
+          <h2 id="panelReferencesTitle">References</h2>
+          <span id="panelReferencesMeta">papers</span>
+        </div>
+        <ol>
+          <li>
+            <a href="https://u-fukui.repo.nii.ac.jp/record/22564/files/GetPDFServlet.pdf" target="_blank" rel="noopener noreferrer">
+              [1] D. Tanaka, "General chemotactic model of oscillators," Physical Review Letters 99, 134103, 2007.
+            </a>
+          </li>
+          <li>
+            <a href="https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/1633-06.pdf" target="_blank" rel="noopener noreferrer">
+              [2] D. Tanaka and K. Iida, "Membrane pattern in a swarm oscillator model," RIMS Kokyuroku 1633, 2009.
+            </a>
+          </li>
+          <li>
+            <a href="https://academic.oup.com/ptps/article-pdf/doi/10.1143/PTPS.178.169/5287835/178-169.pdf" target="_blank" rel="noopener noreferrer">
+              [3] D. Tanaka, "Swarm oscillators," Progress of Theoretical Physics Supplement 178, 169-177, 2009.
+            </a>
+          </li>
+        </ol>
+      </section>
+
+    </aside>
+
+    <section class="hud" aria-label="current model information">
+      <div class="hud-title" id="hudTitle">Dan Tanaka membrane candidate</div>
+      <div class="hud-equation" id="hudEquation">dpsi, dr from exp(-R) chemotactic phase coupling</div>
+      <div class="phase-strip" aria-hidden="true"></div>
+      <div class="phase-legend" id="phaseLegend"></div>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

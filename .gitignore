@@ -1,0 +1,32 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+outputs/
+_tmp/
+node_modules/
+webapp/node_modules/
+webapp/dist/
+.DS_Store
+*.log
+.env
+.env.local
+.env.*.local
+.vercel/
+
+# Local agent / planning material. Keep out of the public repository.
+AGENTS.md
+.agents/
+.codex/
+prompts/
+
+# Local notes, reproduction plans, source PDFs, and bibliography.
+docs/
+papers/
