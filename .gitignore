@@ -12,8 +12,6 @@ dist/
 outputs/
 _tmp/
 node_modules/
-webapp/node_modules/
-webapp/dist/
 .DS_Store
 *.log
 .env

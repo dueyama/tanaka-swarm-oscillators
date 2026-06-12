@@ -1,13 +1,21 @@
 {
-  "name": "tanaka-swarm-oscillators-site",
+  "name": "tanaka-swarm-oscillators",
   "version": "0.2.0",
   "private": true,
   "type": "module",
+  "description": "Interactive browser simulator for Dan Tanaka's chemotactic swarm oscillators.",
   "scripts": {
-    "dev": "npm --prefix webapp run dev",
-    "build": "npm --prefix webapp run build",
-    "preview": "npm --prefix webapp run preview",
-    "test": "npm --prefix webapp test"
+    "dev": "node scripts/serve.mjs . 5173",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs dist 4173",
+    "test": "node tests/simulation.test.mjs"
   },
+  "keywords": [
+    "swarm-oscillator",
+    "tanaka",
+    "chemotaxis",
+    "artificial-life",
+    "canvas"
+  ],
   "license": "MIT"
 }

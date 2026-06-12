@@ -47,29 +47,28 @@ npm run build
 npm run preview
 ```
 
-The static build is written to `webapp/dist/`.
+The static build is written to `dist/`.
 
 ## Project Layout
 
 ```text
 package.json              root scripts for local use and static hosting builds
 vercel.json               static hosting build configuration
-webapp/
-  index.html              simulator page
-  preset-guide.html       equation and preset guide
-  app.js                  Canvas runtime and controls
-  preset-guide.js         guide-page preview rendering
-  styles.css              app and guide styling
-  src/
-    simulation.js         Tanaka RHS and diagnostics
-    presets.js            preset and slider definitions
-    i18n.js               English / Japanese UI text
-    vercel-analytics.js   Vercel Web Analytics loader
-  tests/
-    simulation.test.mjs   sign-convention and smoke tests
-  scripts/
-    build.mjs             static build script
-    serve.mjs             local dev / preview server
+index.html                simulator page
+preset-guide.html         equation and preset guide
+app.js                    Canvas runtime and controls
+preset-guide.js           guide-page preview rendering
+styles.css                app and guide styling
+src/
+  simulation.js           Tanaka RHS and diagnostics
+  presets.js              preset and slider definitions
+  i18n.js                 English / Japanese UI text
+  vercel-analytics.js     Vercel Web Analytics loader
+tests/
+  simulation.test.mjs     sign-convention and smoke tests
+scripts/
+  build.mjs               static build script
+  serve.mjs               local dev / preview server
 ```
 
 ## References
