@@ -70,6 +70,7 @@ const state = {
   camera: { centerX: 0, centerY: 0, scale: 1, worldCx: 0, worldCy: 0, span: 10 },
   pointer: { active: false, x: 0, y: 0, world: null },
   frameCount: 0,
+  rafId: 0,
   fpsLastTime: performance.now(),
   fpsFrames: 0,
   fps: 0,
@@ -87,7 +88,7 @@ function init() {
   loadPreset(PUBLIC_MODEL, initialPreset);
   installEvents();
   resize();
-  requestAnimationFrame(loop);
+  startAnimation();
 }
 
 function populatePresetSelect(model, selectedId) {
@@ -113,6 +114,7 @@ function loadPreset(model, presetId) {
   renderControls();
   updateGuideLink(preset.id);
   hardClear();
+  requestRender();
 }
 
 function guideHref(presetId) {
@@ -253,7 +255,11 @@ function createSlider(spec) {
     if (spec.key === "boxSize" && state.model === "tanaka") {
       state.params.viewScale = next;
     }
-    if (spec.resets || spec.key === "n") resetSystem();
+    if (spec.resets || spec.key === "n") {
+      resetSystem();
+    } else {
+      requestRender();
+    }
   });
 
   wrap.append(name, value, input, hint);
@@ -264,6 +270,7 @@ function resetSystem() {
   state.system = createSystem(state.model, state.params);
   state.camera.scale = 1;
   hardClear();
+  requestRender();
 }
 
 function installEvents() {
@@ -272,6 +279,7 @@ function installEvents() {
     const observer = new ResizeObserver(resize);
     observer.observe(ui.simSurface);
   }
+  document.addEventListener("visibilitychange", handleVisibilityChange);
 
   ui.presetSelect.addEventListener("change", () => {
     loadPreset(state.model, ui.presetSelect.value);
@@ -310,6 +318,13 @@ function installEvents() {
 function toggleRun() {
   state.running = !state.running;
   renderRunButton();
+  if (state.running) {
+    state.fpsLastTime = performance.now();
+    state.fpsFrames = 0;
+    startAnimation();
+  } else {
+    requestRender();
+  }
 }
 
 function setLanguageMode(mode) {
@@ -376,11 +391,13 @@ function onPointer(event) {
   state.pointer.x = event.clientX - rect.left;
   state.pointer.y = event.clientY - rect.top;
   state.pointer.world = screenToWorld(state.pointer.x, state.pointer.y);
+  requestRender();
 }
 
 function endPointer() {
   state.pointer.active = false;
   state.pointer.world = null;
+  requestRender();
 }
 
 function resize() {
@@ -400,6 +417,7 @@ function resize() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   trailCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
   hardClear();
+  requestRender();
 }
 
 function hardClear() {
@@ -413,8 +431,37 @@ function hardClear() {
   ctx.restore();
 }
 
+function startAnimation() {
+  if (state.rafId || document.hidden) return;
+  state.rafId = requestAnimationFrame(loop);
+}
+
+function requestRender() {
+  if (state.running || state.rafId || document.hidden) return;
+  state.rafId = requestAnimationFrame(loop);
+}
+
+function handleVisibilityChange() {
+  if (document.hidden) {
+    if (state.rafId) cancelAnimationFrame(state.rafId);
+    state.rafId = 0;
+    return;
+  }
+  state.fpsLastTime = performance.now();
+  state.fpsFrames = 0;
+  if (state.running) {
+    startAnimation();
+  } else {
+    requestRender();
+  }
+}
+
 function loop(now) {
-  if (state.running && state.system) {
+  state.rafId = 0;
+  if (document.hidden) return;
+  const shouldAnimate = state.running && state.system;
+
+  if (shouldAnimate) {
     if (state.pointer.active && state.pointer.world) {
       applyStir(state.system, state.params, state.pointer.world, state.params.stirStrength ?? 0);
     }
@@ -423,12 +470,16 @@ function loop(now) {
   }
 
   draw(now);
-  updateFps(now);
+  if (shouldAnimate) {
+    updateFps(now);
+  } else {
+    ui.fpsValue.textContent = "0";
+  }
   if (now - state.lastDiag > 150) {
     updateDiagnostics();
     state.lastDiag = now;
   }
-  requestAnimationFrame(loop);
+  if (shouldAnimate) startAnimation();
 }
 
 function updateFps(now) {
